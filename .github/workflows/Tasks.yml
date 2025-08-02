@@ -20,10 +20,15 @@ jobs:
               run: |
                 sudo apt-get update
                 sudo apt-get install -y zlib1g-dev libopus-dev
-            - name: Install D++
+            - name: Install DPP
               run: |
-                curl -o dpp.deb https://dl.dpp.dev
-                sudo dpkg -i dpp.deb
+                git clone https://github.com/brainboxdotcc/DPP
+                cd DPP
+                git checkout v10.1.3
+                cmake -B ./build
+                cmake --build ./build -j $(($(nproc) / 2))
+                cd build
+                sudo make install
             - name: Install mongocxx
               run: |
                 curl -OL https://github.com/mongodb/mongo-cxx-driver/releases/download/r4.1.0/mongo-cxx-driver-r4.1.0.tar.gz
