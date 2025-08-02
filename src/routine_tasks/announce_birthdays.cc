@@ -52,7 +52,7 @@ namespace routine_tasks {
                 member = member_callback.get<dpp::guild_member>();
             }
             else {
-                member = member_opt.value();
+                member = *member_opt;
             }
 
             const std::vector<dpp::snowflake>& roles = member.get_roles();
@@ -77,12 +77,6 @@ namespace routine_tasks {
 
         for (auto& doc : cursor) {
             std::string_view user_id = doc["_id"].get_string();
-
-            std::optional<dpp::guild_member> member_opt = util::get_cached_guild_member(bot, user_id);
-            if (member_opt) {
-                birthday_members.push_back(member_opt.value());
-                continue;
-            }
 
             auto member_callback = co_await bot.co_guild_get_member(BASE_GUILD_ID, user_id);
 

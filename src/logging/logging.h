@@ -30,7 +30,7 @@ namespace logging {
     }
 
     template<typename... Args>
-    void error(dpp::cluster* bot, const char* event_name, std::format_string<Args...> fmt,  Args&&... args) {
+    void error(dpp::cluster* bot, const char* event_name, std::format_string<Args...> fmt, Args&&... args) {
         // get date and time in yyyy-MM-dd HH:mm:ss format
         auto now = std::chrono::system_clock::now();
         const std::time_t now_time = std::chrono::system_clock::to_time_t(now);
