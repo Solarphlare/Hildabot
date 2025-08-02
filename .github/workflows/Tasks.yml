@@ -24,7 +24,7 @@ jobs:
               run: |
                 git clone https://github.com/brainboxdotcc/DPP
                 cd DPP
-                git checkout v10.1.3
+                git switch --detach v10.1.3
                 cmake -B ./build
                 cmake --build ./build -j $(($(nproc) / 2))
                 cd build
