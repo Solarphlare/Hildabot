@@ -3,7 +3,7 @@
 
 namespace guild_member_add {
     void handle(const dpp::guild_member_add_t& event) {
-        if (event.added.has_bypasses_verification() || event.added.get_user()->is_bot()) {
+        if (event.added.has_bypasses_verification() || event.added.get_user()->is_bot()) [[unlikely]] {
             return;
         }
 

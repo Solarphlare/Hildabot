@@ -92,7 +92,7 @@ namespace routine_tasks {
 
             auto message_callback = co_await bot.co_message_create(message);
 
-            if (message_callback.is_error()) {
+            if (message_callback.is_error()) [[unlikely]] {
                 logging::error(&bot, "Birthdays", "Failed to send birthday message: {}", message_callback.get_error().human_readable);
             }
         }
@@ -102,7 +102,7 @@ namespace routine_tasks {
 
             auto message_callback = co_await bot.co_message_create(message);
 
-            if (message_callback.is_error()) {
+            if (message_callback.is_error()) [[unlikely]] {
                 logging::error(&bot, "Birthdays", "Failed to send birthday message: {}", message_callback.get_error().human_readable);
             }
         }
@@ -123,7 +123,7 @@ namespace routine_tasks {
             dpp::message message(stream.str());
             message.set_channel_id(BIRTHDAY_CHANNEL_ID);
             auto message_callback = co_await bot.co_message_create(message);
-            if (message_callback.is_error()) {
+            if (message_callback.is_error()) [[unlikely]] {
                 logging::error(&bot, "Birthdays", "Failed to send birthday message: {}", message_callback.get_error().human_readable);
             }
         }

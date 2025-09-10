@@ -48,7 +48,7 @@ namespace slash_commands {
             auto interac = event.command.get_command_interaction();
             size_t start_idx = 0;
 
-            if (leaderboard_entries.size() == 0) {
+            if (leaderboard_entries.size() == 0) [[unlikely]] {
                 co_await event.co_reply("Something went wrong while trying to get the leaderboard.");
                 co_return;
             }

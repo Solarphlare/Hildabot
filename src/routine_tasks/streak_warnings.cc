@@ -38,7 +38,7 @@ namespace routine_tasks {
             if (!user_entry.get_streak_warnings_preference()) continue;
 
             dpp::confirmation_callback_t callback = co_await bot.co_user_get_cached(user_id);
-            if (callback.is_error()) {
+            if (callback.is_error()) [[unlikely]] {
                 logging::event(&bot, "StreakWarnings", "Failed to get user {}: {}", user_id, callback.get_error().message);
                 continue;
             }
@@ -52,9 +52,10 @@ namespace routine_tasks {
 
             auto result = co_await bot.co_direct_message_create(user_id, embed);
 
-            if (result.is_error()) {
+            if (result.is_error()) [[unlikely]] {
                 logging::event(&bot, "StreakWarnings", "Failed to send next-day streak warning to {} ({}): {}", user.username, user_id, result.get_error().message);
-            } else {
+            }
+            else [[likely]] {
                 logging::event(&bot, "StreakWarnings", "Sent next-day streak warning to user {} ({})", user.username, user_id);
             }
         }
@@ -70,7 +71,7 @@ namespace routine_tasks {
             if (!user_entry.get_streak_warnings_preference()) continue;
 
             dpp::confirmation_callback_t user_opt = co_await bot.co_user_get_cached(user_id);
-            if (user_opt.is_error()) {
+            if (user_opt.is_error()) [[unlikely]] {
                 logging::event(&bot, "StreakWarnings", "Failed to get user {}: {}", user_id, user_opt.get_error().message);
                 continue;
             }
@@ -84,9 +85,10 @@ namespace routine_tasks {
 
             auto result = co_await bot.co_direct_message_create(user_id, embed);
 
-            if (result.is_error()) {
+            if (result.is_error()) [[unlikely]] {
                 logging::event(&bot, "StreakWarnings", "Failed to send three-day streak warning to user {} ({}): {}", user.username, user_id, result.get_error().message);
-            } else {
+            }
+            else [[likely]] {
                 logging::event(&bot, "StreakWarnings", "Sent three-day streak warning to user {} ({})", user.username, user_id);
             }
         }

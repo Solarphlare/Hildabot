@@ -31,7 +31,7 @@ namespace rankutil {
     int rank_level_from_level(int level) {
         // std::upper_bound returns the first element greater than the given level.
         auto it = std::upper_bound(std::begin(rank_levels), std::end(rank_levels), level);
-        if (it == std::begin(rank_levels)) {
+        if (it == std::begin(rank_levels)) [[unlikely]] {
             // If the level is lower than the smallest rank level.
             throw std::out_of_range("Level is below the minimum rank level.");
         }
