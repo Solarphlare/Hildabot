@@ -19,10 +19,12 @@ bool test_message_validity(const dpp::message& message) {
 
 namespace events {
     dpp::task<void> handle_message_create(const dpp::message_create_t& event) {
+        #ifndef DEBUG
         if (event.msg.channel_id == HEARTBEAT_CHANNEL_ID) {
             co_await heartbeat::send_heartbeat(event);
             co_return;
         }
+        #endif
 
         if (!test_message_validity(event.msg)) co_return;
 
