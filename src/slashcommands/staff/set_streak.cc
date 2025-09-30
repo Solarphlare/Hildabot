@@ -4,6 +4,7 @@
 #include <bsoncxx/builder/basic/document.hpp>
 #include "util/command_permissions.h"
 #include "util/helpers.h"
+#include "logging/logging.h"
 #include "db/user_entry.h"
 #include "db/mongo_database.h"
 
@@ -22,10 +23,10 @@ namespace commands {
             dpp::command_interaction interaction = event.command.get_command_interaction();
             auto subcommand = interaction.options[0];
 
-            const dpp::guild_member user = event.command.get_resolved_member(subcommand.get_value<dpp::snowflake>(0));
+            const dpp::guild_member member = event.command.get_resolved_member(subcommand.get_value<dpp::snowflake>(0));
             const int32_t streak = subcommand.get_value<long>(1);
 
-            if (user.user_id == event.command.usr.id) {
+            if (member.user_id == event.command.usr.id) {
                 dpp::message reply = dpp::message("You can't modify your own streak.").set_flags(dpp::m_ephemeral);
                 co_await event.co_reply(reply);
                 co_return;
@@ -37,7 +38,7 @@ namespace commands {
                 co_return;
             }
 
-            UserEntry user_entry(user);
+            UserEntry user_entry(member);
 
             if (user_entry.get_high_score() < streak) {
                 dpp::message reply = dpp::message("You can't set a user's streak higher than their high score.").set_flags(dpp::m_ephemeral);
@@ -55,7 +56,7 @@ namespace commands {
 
             auto& db = MongoDatabase::get_database();
             db["users"].update_one(
-                make_document(kvp("_id", user.user_id.str())),
+                make_document(kvp("_id", member.user_id.str())),
                 make_document(kvp("$set", make_document(
                     kvp("streak", make_document(
                         kvp("count", streak), // this MUST be an int32_t
@@ -64,7 +65,8 @@ namespace commands {
                 )
             )));
 
-            co_await event.co_reply(std::format("Set {}'s streak to {}. It now expires on <t:{}>.", user.get_mention(), streak, new_expiry));
+            co_await event.co_reply(std::format("Set {}'s streak to {}. It now expires on <t:{}>.", member.get_mention(), streak, new_expiry));
+            logging::event(event.owner, "Set Streak", "{} ({}) set {} ({})'s streak to {}.", event.command.usr.username, event.command.usr.id.str(), member.get_user()->username, member.user_id.str(), streak);
         }
     }
 }

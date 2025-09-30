@@ -1,3 +1,5 @@
+#ifndef DEBUG
+#include "heartbeat.h"
 #include <dpp/dpp.h>
 #include <bsoncxx/builder/basic/document.hpp>
 #include "db/mongo_database.h"
@@ -12,3 +14,4 @@ namespace heartbeat {
         co_await event.co_send("ACK");
     }
 }
+#endif
