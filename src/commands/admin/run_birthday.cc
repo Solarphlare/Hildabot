@@ -10,5 +10,5 @@ dpp::task<void> commands::run_birthday::execute(const dpp::message_create_t& eve
     }
 
     co_await routine_tasks::announce_birthdays(*event.owner);
-    event.owner->co_message_add_reaction(event.msg, "\U0001F44D"); // thumbs up
+    co_await event.owner->co_message_add_reaction(event.msg, "\U0001F44D"); // thumbs up
 }
