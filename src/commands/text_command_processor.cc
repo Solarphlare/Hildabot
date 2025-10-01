@@ -15,6 +15,7 @@
 #include "staff/initialize_user.h"
 
 #include "admin/set_activity.h"
+#include "admin/run_birthday.h"
 
 typedef std::function<dpp::task<void>(const dpp::message_create_t&, const std::vector<std::string>&)> command_function;
 
@@ -27,7 +28,8 @@ static std::unordered_map<std::string, command_function> command_map = {
     {"setactivity", commands::set_activity::execute},
     {"levelalert", commands::levelalert::execute},
     {"streakwarning", commands::streakwarning::execute},
-    {"leaderboard", commands::leaderboard::execute}
+    {"leaderboard", commands::leaderboard::execute},
+    {"runbirthday", commands::run_birthday::execute}
 };
 
 namespace commands {
