@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <random>
 #include <string>
+#include <iterator>
 #include <format>
 #include "db/mongo_database.h"
 #include "db/user_entry.h"
@@ -14,11 +15,11 @@
 #include "rank/rank_util.h"
 #include "util/owner.h"
 
-const std::vector<dpp::snowflake> ignored_channels = { dpp::snowflake{ 495034452422950915L } };
+constexpr dpp::snowflake ignored_channels[] = { dpp::snowflake{ 495034452422950915L } };
 
 namespace xp {
     dpp::task<void> give_xp_for_message(const dpp::message_create_t& event) {
-        if (std::find(ignored_channels.begin(), ignored_channels.end(), event.msg.channel_id) != ignored_channels.end()) co_return; // Ignore messages in specified channels
+        if (std::find(std::begin(ignored_channels), std::end(ignored_channels), event.msg.channel_id) != std::end(ignored_channels)) co_return; // Ignore messages in specified channels
 
         UserEntry user(event.msg.author);
 
