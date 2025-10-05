@@ -22,7 +22,7 @@ jobs:
                 cd DPP
                 git switch --detach v10.1.3
                 cmake -B ./build
-                cmake --build ./build -j $(nproc)
+                cmake --build ./build -j$(nproc)
                 cd build
                 sudo make install
             - name: Install mongocxx
@@ -31,14 +31,14 @@ jobs:
                 tar -xzf mongo-cxx-driver-r4.1.2.tar.gz
                 cd mongo-cxx-driver-r4.1.2/build
                 cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=20
-                cmake --build .
+                cmake --build . -j$(nproc)
                 sudo cmake --build . --target install
             - name: Prepare Files
               env:
                 CONFIG_DATA: ${{ secrets.CONFIG_DATA }}
               run: echo $CONFIG_DATA | base64 -d > $GITHUB_WORKSPACE/src/include/config.h
             - name: Build Project
-              run: make
+              run: make -j$(nproc)
             - name: Sign Binary
               env:
                 SIGNATURE_KEY: ${{ secrets.SIGNATURE_KEY }}
