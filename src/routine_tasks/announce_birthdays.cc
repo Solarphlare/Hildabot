@@ -29,38 +29,25 @@ namespace routine_tasks {
         #endif
 
         std::chrono::zoned_time zt{"America/Chicago", std::chrono::system_clock::now()};
-        // get yesterday's date
-        auto yesterday = zt.get_local_time() - std::chrono::days(1);
-        std::chrono::year_month_day yesterday_ymd = std::chrono::year_month_day(std::chrono::floor<std::chrono::days>(yesterday));
-        uint32_t yesterday_month = static_cast<uint32_t>(yesterday_ymd.month());
-        uint32_t yesterday_day = static_cast<uint32_t>(yesterday_ymd.day());
+        auto callback = co_await bot.co_roles_get(BASE_GUILD_ID);
 
-        // get all users with yesterday's birthday
-        auto yesterday_cursor = db["users"].find(
-            make_document(kvp("birthday.month", (int) yesterday_month), kvp("birthday.day", (int) yesterday_day))
-        );
+        if (!callback.is_error()) [[likely]] {
+            auto roles = callback.get<dpp::role_map>();
 
-        for (auto& doc : yesterday_cursor) {
-            std::string_view user_id = doc["_id"].get_string();
+            auto it = roles.find(BIRTHDAY_ROLE_ID);
 
-            std::optional<dpp::guild_member> member_opt = util::get_cached_guild_member(bot, user_id);
-            dpp::guild_member member;
+            if (it != roles.end()) [[likely]] {
+                dpp::members_container members = it->second.get_members();
 
-            if (!member_opt) {
-                auto member_callback = co_await bot.co_guild_get_member(BASE_GUILD_ID, user_id);
-                if (member_callback.is_error()) continue; // skip users not in the guild
-                member = member_callback.get<dpp::guild_member>();
+                for (auto& [user_id, member] : members) {
+                    member.remove_role(it->second.id);
+                    auto edit_callback = co_await bot.co_guild_edit_member(member);
+
+                    if (edit_callback.is_error()) [[unlikely]] {
+                        logging::error(&bot, "Birthdays", "Failed to remove birthday role from {} ({}): {}", member.get_user()->username, user_id.str(), edit_callback.get_error().human_readable);
+                    }
+                }
             }
-            else {
-                member = *member_opt;
-            }
-
-            const std::vector<dpp::snowflake>& roles = member.get_roles();
-
-            if (std::find(roles.begin(), roles.end(), BIRTHDAY_ROLE_ID) == roles.end()) continue;
-
-            member.remove_role(BIRTHDAY_ROLE_ID);
-            co_await bot.co_guild_edit_member(member);
         }
 
         auto local_time = zt.get_local_time();
@@ -70,7 +57,7 @@ namespace routine_tasks {
 
         // get all users with a birthday in the current month and day
         auto cursor = db["users"].find(
-            make_document(kvp("birthday.month", (int) month), kvp("birthday.day", (int) day))
+            make_document(kvp("birthday.month", static_cast<int>(month)), kvp("birthday.day", static_cast<int>(day)))
         );
 
         std::vector<dpp::guild_member> birthday_members;
