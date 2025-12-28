@@ -43,17 +43,9 @@ namespace routine_tasks {
         for (auto& doc : yesterday_cursor) {
             std::string_view user_id = doc["_id"].get_string();
 
-            std::optional<dpp::guild_member> member_opt = util::get_cached_guild_member(bot, user_id);
-            dpp::guild_member member;
-
-            if (!member_opt) {
-                auto member_callback = co_await bot.co_guild_get_member(BASE_GUILD_ID, user_id);
-                if (member_callback.is_error()) continue; // skip users not in the guild
-                member = member_callback.get<dpp::guild_member>();
-            }
-            else {
-                member = *member_opt;
-            }
+            auto member_callback = co_await bot.co_guild_get_member(BASE_GUILD_ID, user_id);
+            if (member_callback.is_error()) continue; // skip users not in the guild
+            dpp::guild_member member = member_callback.get<dpp::guild_member>();
 
             const std::vector<dpp::snowflake>& roles = member.get_roles();
 
@@ -79,10 +71,9 @@ namespace routine_tasks {
             std::string_view user_id = doc["_id"].get_string();
 
             auto member_callback = co_await bot.co_guild_get_member(BASE_GUILD_ID, user_id);
-
             if (member_callback.is_error()) continue; // skip users not in the guild
-
             auto member = member_callback.get<dpp::guild_member>();
+
             birthday_members.push_back(member);
         }
 
