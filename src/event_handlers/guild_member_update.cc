@@ -16,8 +16,13 @@ namespace guild_member_update {
         auto it = std::find(pending_guild_members.begin(), pending_guild_members.end(), event.updated.user_id);
         if (it == pending_guild_members.end()) co_return;
 
+        dpp::guild guild = event.updating_guild;
+        auto guild_callback = co_await event.owner->co_guild_get(event.updating_guild.id);
+        if (!guild_callback.is_error()) {
+            guild = guild_callback.get<dpp::guild>();
+        }
+
         pending_guild_members.erase(it);
-        std::cout << "Member removed: " << event.updated.user_id.str() << "\n";
 
         const dpp::embed embed = dpp::embed()
             .set_author({ event.updated.get_user()->global_name, "", event.updated.get_user()->get_avatar_url(0U, dpp::image_type::i_png, false) })
@@ -26,14 +31,14 @@ namespace guild_member_update {
             .add_field("Channels to check out!", "- [Show Discussion](https://discord.com/channels/492572315138392064/492573040027369483)\n- [Movie Discussion](https://discord.com/channels/492572315138392064/498574984294301696)\n- [Fanart](https://discord.com/channels/492572315138392064/492580873628286976)", true)
             .set_image("https://media.giphy.com/media/ygBBMqVPvd4zvCRT1y/giphy.gif")
             .set_color(HILDA_BLUE)
-            .set_footer({ "Have any questions? Ask around or check out #open-a-ticket for help!", event.updating_guild.get_icon_url(0U, dpp::image_type::i_png, false) });
+            .set_footer({ "Have any questions? Ask around or check out #open-a-ticket for help!", guild.get_icon_url(0U, dpp::image_type::i_png, false) });
 
         static std::random_device rd;
         static std::mt19937 gen(rd());
         static std::uniform_int_distribution<> dis(0, 4);
         const int random_index = dis(gen);
 
-        const std::string msg_content = std::format("**#{} - Welcome to Hildacord, {}** {}!\n\nHildacord is a great place for everyone from all around the world to come around a show that they all love: Hilda!", event.updating_guild.member_count, event.updated.get_user()->get_mention(), welcome_messages[random_index]);
+        const std::string msg_content = std::format("**#{} - Welcome to Hildacord, {}** {}!\n\nHildacord is a great place for everyone from all around the world to come around a show that they all love: Hilda!", guild.member_count, event.updated.get_user()->get_mention(), welcome_messages[random_index]);
 
         const dpp::message welcome_message = dpp::message(msg_content)
             .add_embed(embed)
