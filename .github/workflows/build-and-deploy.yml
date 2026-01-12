@@ -10,6 +10,10 @@ on:
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      attestations: write
+      id-token: write
     steps:
       - uses: actions/checkout@v6
       - name: Install Library Dependencies
@@ -18,7 +22,7 @@ jobs:
           sudo apt-get install -y libopus-dev
 
       - name: Cache DPP
-        uses: actions/cache@v6
+        uses: actions/cache@v5
         id: cache-dpp
         with:
           path: dpp_build_output
@@ -36,7 +40,7 @@ jobs:
           sudo make install
 
       - name: Cache mongocxx
-        uses: actions/cache@v6
+        uses: actions/cache@v5
         id: cache-mongocxx
         with:
           path: mongo_build_output
@@ -66,14 +70,14 @@ jobs:
       - name: Build Project
         run: make -j$(nproc)
 
-      - name: Sign Binary
-        env:
-          SIGNATURE_KEY: ${{ secrets.SIGNATURE_KEY }}
-        run: echo $SIGNATURE_KEY | base64 -d > $GITHUB_WORKSPACE/signature.pem && openssl dgst -sha256 -sign $GITHUB_WORKSPACE/signature.pem -out $GITHUB_WORKSPACE/hildabot.signature $GITHUB_WORKSPACE/hildabot
+      - name: Attest Build
+        uses: actions/attest-build-provenance@v3
+        with:
+          subject-path: '${{ github.workspace }}/hildabot'
 
       - name: Deploy Project
         env:
           DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
           DEPLOY_URL: ${{ secrets.DEPLOY_URL }}
-        run: "curl -sf -X POST -F payload=@$GITHUB_WORKSPACE/hildabot -F signaturefile=@$GITHUB_WORKSPACE/hildabot.signature -H \"Authorization: $DEPLOY_KEY\" -m 30 $DEPLOY_URL"
+        run: "curl -sf -X POST -F payload=@$GITHUB_WORKSPACE/hildabot -H \"Authorization: $DEPLOY_KEY\" -m 30 $DEPLOY_URL"
 
