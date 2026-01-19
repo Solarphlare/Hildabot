@@ -1,5 +1,5 @@
 # ——— Toolchain ———
-CXX      := g++
+CXX      := g++-14
 CXXFLAGS := -std=c++20 -Wall -Werror -Wpedantic \
              -I/usr/local/include/mongocxx/v_noabi \
 			 -I/usr/local/include/bsoncxx/v_noabi \
