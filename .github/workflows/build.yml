@@ -26,10 +26,10 @@ jobs:
                 sudo make install
             - name: Install mongocxx
               run: |
-                curl -sOLf https://github.com/mongodb/mongo-cxx-driver/releases/download/r4.1.2/mongo-cxx-driver-r4.1.2.tar.gz
-                tar -xzf mongo-cxx-driver-r4.1.2.tar.gz
-                cd mongo-cxx-driver-r4.1.2/build
-                cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=20
+                curl -sOLf https://github.com/mongodb/mongo-cxx-driver/releases/download/r4.1.4/mongo-cxx-driver-r4.1.4.tar.gz
+                tar -xzf mongo-cxx-driver-r4.1.4.tar.gz
+                cd mongo-cxx-driver-r4.1.4/build
+                cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=20 -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/mongo_build_output
                 cmake --build . -j$(nproc)
                 sudo cmake --build . --target install
             - name: Build Project
