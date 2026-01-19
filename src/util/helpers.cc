@@ -1,3 +1,4 @@
+#include "util/helpers.h"
 #include <chrono>
 #include <optional>
 #include <dpp/dpp.h>

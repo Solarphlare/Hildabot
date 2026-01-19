@@ -1,3 +1,4 @@
+#include "slashcommands/birthday/list_birthday.h"
 #include <dpp/dpp.h>
 #include "db/mongo_database.h"
 #include <bsoncxx/builder/basic/document.hpp>
@@ -9,7 +10,7 @@
 #include <vector>
 #include <utility>
 #include "constants.h"
-#include "birthday_constants.h"
+#include "slashcommands/birthday/birthday_constants.h"
 #include "util/helpers.h"
 
 using bsoncxx::builder::basic::make_document;

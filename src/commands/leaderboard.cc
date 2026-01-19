@@ -1,4 +1,4 @@
-#include "leaderboard.h"
+#include "commands/leaderboard.h"
 #include <dpp/dpp.h>
 #include "constants.h"
 

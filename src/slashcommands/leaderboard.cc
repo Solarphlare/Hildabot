@@ -1,4 +1,4 @@
-#include "leaderboard.h"
+#include "slashcommands/leaderboard.h"
 #include <dpp/dpp.h>
 #include <vector>
 #include <string>

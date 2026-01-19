@@ -1,21 +1,22 @@
+#include "commands/text_command_processor.h"
 #include <dpp/dpp.h>
 #include <string>
 #include <sstream>
 #include <unordered_map>
 #include "config.h"
 
-#include "stats.h"
-#include "levelcheck.h"
-#include "submit.h"
-#include "birthday.h"
-#include "levelalert.h"
-#include "streakwarning.h"
-#include "leaderboard.h"
+#include "commands/stats.h"
+#include "commands/levelcheck.h"
+#include "commands/submit.h"
+#include "commands/birthday.h"
+#include "commands/levelalert.h"
+#include "commands/streakwarning.h"
+#include "commands/leaderboard.h"
 
-#include "staff/initialize_user.h"
+#include "commands/staff/initialize_user.h"
 
-#include "admin/set_activity.h"
-#include "admin/run_birthday.h"
+#include "commands/admin/set_activity.h"
+#include "commands/admin/run_birthday.h"
 
 typedef std::function<dpp::task<void>(const dpp::message_create_t&, const std::vector<std::string>&)> command_function;
 

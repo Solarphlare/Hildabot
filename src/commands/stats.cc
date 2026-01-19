@@ -1,4 +1,4 @@
-#include "stats.h"
+#include "commands/stats.h"
 #include <dpp/dpp.h>
 #include <string>
 #include <regex>

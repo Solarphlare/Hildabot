@@ -1,4 +1,4 @@
-#include "set_activity.h"
+#include "commands/admin/set_activity.h"
 #include <dpp/dpp.h>
 #include <vector>
 #include <string>

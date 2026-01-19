@@ -1,4 +1,4 @@
-#include "user_entry.h"
+#include "db/user_entry.h"
 #include "db/mongo_database.h"
 #include <bsoncxx/builder/basic/document.hpp>
 #include <optional>

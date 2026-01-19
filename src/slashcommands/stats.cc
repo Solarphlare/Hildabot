@@ -1,4 +1,4 @@
-#include "stats.h"
+#include "slashcommands/stats.h"
 #include <dpp/dpp.h>
 #include "db/user_entry.h"
 #include "xp/xp_system_calculator.h"

@@ -1,3 +1,4 @@
+#include "store/purchase_confirmation.h"
 #include <dpp/dpp.h>
 #include <string>
 #include <memory>

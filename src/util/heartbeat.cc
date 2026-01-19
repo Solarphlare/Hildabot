@@ -1,5 +1,5 @@
 #ifndef DEBUG
-#include "heartbeat.h"
+#include "util/heartbeat.h"
 #include <dpp/dpp.h>
 #include <bsoncxx/builder/basic/document.hpp>
 #include "db/mongo_database.h"

@@ -1,4 +1,4 @@
-#include "inventory.h"
+#include "slashcommands/inventory.h"
 #include <dpp/dpp.h>
 #include <format>
 #include <bsoncxx/builder/basic/document.hpp>

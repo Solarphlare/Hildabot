@@ -1,3 +1,4 @@
+#include "util/command_permissions.h"
 #include <dpp/dpp.h>
 #include <algorithm>
 #include "constants.h"

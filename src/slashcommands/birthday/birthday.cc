@@ -1,6 +1,6 @@
 #include <dpp/dpp.h>
-#include "set_birthday.h"
-#include "list_birthday.h"
+#include "slashcommands/birthday/set_birthday.h"
+#include "slashcommands/birthday/list_birthday.h"
 
 namespace slash_commands {
     namespace birthday {

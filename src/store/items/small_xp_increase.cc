@@ -1,4 +1,4 @@
-#include "small_xp_increase.h"
+#include "store/items/small_xp_increase.h"
 #include <dpp/dpp.h>
 #include "db/user_entry.h"
 #include "xp/xp_system.h"

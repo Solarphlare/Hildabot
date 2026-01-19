@@ -1,4 +1,4 @@
-#include "guild_member_update.h"
+#include "event_handlers/guild_member_update.h"
 #include <dpp/dpp.h>
 #include <random>
 #include <format>

@@ -1,4 +1,4 @@
-#include "set_birthday.h"
+#include "slashcommands/birthday/set_birthday.h"
 #include <dpp/dpp.h>
 #include <algorithm>
 #include <bsoncxx/builder/basic/document.hpp>
@@ -6,7 +6,7 @@
 #include <format>
 #include "db/mongo_database.h"
 #include "db/user_entry.h"
-#include "birthday_constants.h"
+#include "slashcommands/birthday/birthday_constants.h"
 
 using bsoncxx::builder::basic::make_document;
 using bsoncxx::builder::basic::kvp;

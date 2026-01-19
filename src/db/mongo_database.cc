@@ -1,4 +1,4 @@
-#include "mongo_database.h"
+#include "db/mongo_database.h"
 #include "config.h"
 
 #include <mongocxx/instance.hpp>

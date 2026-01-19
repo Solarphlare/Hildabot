@@ -1,3 +1,4 @@
+#include "commands/staff/initialize_user.h"
 #include <dpp/dpp.h>
 #include <regex>
 #include <algorithm>

@@ -1,3 +1,4 @@
+#include "commands/levelcheck.h"
 #include <dpp/dpp.h>
 #include <vector>
 #include <string>

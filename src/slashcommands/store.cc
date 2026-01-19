@@ -1,4 +1,4 @@
-#include "store.h"
+#include "slashcommands/store.h"
 #include <dpp/dpp.h>
 #include <vector>
 #include <string>

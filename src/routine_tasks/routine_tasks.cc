@@ -1,9 +1,10 @@
-#include "routine_tasks.h"
+#include "routine_tasks/routine_tasks.h"
 #include <dpp/dpp.h>
 #include "scheduler/instance.h"
-#include "announce_birthdays.h"
-#include "streak_warnings.h"
-#include "apply_streak_savers.h"
+
+#include "routine_tasks/announce_birthdays.h"
+#include "routine_tasks/streak_warnings.h"
+#include "routine_tasks/apply_streak_savers.h"
 
 namespace routine_tasks {
     void schedule(dpp::cluster& bot) {

@@ -1,4 +1,4 @@
-#include "guild_member_add.h"
+#include "event_handlers/guild_member_add.h"
 #include <dpp/dispatcher.h>
 
 namespace guild_member_add {

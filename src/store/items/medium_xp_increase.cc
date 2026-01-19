@@ -1,4 +1,4 @@
-#include "medium_xp_increase.h"
+#include "store/items/medium_xp_increase.h"
 #include <dpp/dpp.h>
 #include "db/user_entry.h"
 #include "xp/xp_system_calculator.h"

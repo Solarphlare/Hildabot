@@ -1,4 +1,4 @@
-#include "set_streak.h"
+#include "slashcommands/staff/set_streak.h"
 #include <dpp/dpp.h>
 #include <format>
 #include <bsoncxx/builder/basic/document.hpp>

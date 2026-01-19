@@ -1,7 +1,7 @@
+#include "event_handlers/message_create.h"
 #include <dpp/dpp.h>
 #include "config.h"
 #include "constants.h"
-#include "message_create.h"
 #include "xp/xp_system.h"
 #include "commands/text_command_processor.h"
 #include "util/heartbeat.h"
