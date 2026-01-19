@@ -3,23 +3,53 @@
 #include <random>
 #include <format>
 #include <algorithm>
+#include <bsoncxx/json.hpp>
+#include <bsoncxx/types.hpp>
+#include <bsoncxx/document/value.hpp>
 #include "constants.h"
 #include "xp/restore_roles.h"
 #include "event_handlers/guild_member_add.h"
+#include "util/requests.h"
+#include "config.h"
 
+#ifdef DEBUG
 #include <iostream>
+#endif
 
 namespace guild_member_update {
     const char* welcome_messages[5] = { "Come on in and have a seat around the fire!", "We're glad to have you here!", "Glad you could make it!", "Make yourself at home!", "The bells toll to welcome your arrival." };
 
-    dpp::task<void> handle(const dpp::guild_member_update_t& event) {
+    dpp::task<void> handle(const dpp::guild_member_update_t event) {
         auto it = std::find(pending_guild_members.begin(), pending_guild_members.end(), event.updated.user_id);
         if (it == pending_guild_members.end()) co_return;
 
         dpp::guild guild = event.updating_guild;
-        auto guild_callback = co_await event.owner->co_guild_get(event.updating_guild.id);
-        if (!guild_callback.is_error()) {
-            guild = guild_callback.get<dpp::guild>();
+        bsoncxx::document::value guild_data = bsoncxx::from_json("{}");
+
+        try {
+            std::string resp = co_await requests::get("https://discord.com/api/v10/guilds/" + std::to_string(guild.id) + "?with_counts=true", {
+                { "Authorization", "Bot " + std::string(BOT_TOKEN) }
+            });
+
+            guild_data = bsoncxx::from_json(resp);
+        }
+        catch (const std::exception& e) {
+            #ifdef DEBUG
+            std::cerr << "Error fetching guild data: " << e.what() << std::endl;
+            #endif
+            co_return;
+        }
+
+        int32_t member_count = -1;
+
+        try {
+            member_count = guild_data.view()["approximate_member_count"].get_int32();
+        }
+        catch (const std::exception& e) {
+            #ifdef DEBUG
+            std::cerr << "Error parsing member count: " << e.what() << std::endl;
+            #endif
+            co_return;
         }
 
         pending_guild_members.erase(it);
@@ -38,7 +68,14 @@ namespace guild_member_update {
         static std::uniform_int_distribution<> dis(0, 4);
         const int random_index = dis(gen);
 
-        const std::string msg_content = std::format("**#{} - Welcome to Hildacord, {}** {}!\n\nHildacord is a great place for everyone from all around the world to come around a show that they all love: Hilda!", guild.member_count, event.updated.get_user()->get_mention(), welcome_messages[random_index]);
+        std::string msg_content = "";
+
+        if (member_count != -1) {
+            msg_content = std::format("**#{} - Welcome to Hildacord, {}** {}!\n\nHildacord is a great place for everyone from all around the world to come around a show that they all love: Hilda!", member_count, event.updated.get_user()->get_mention(), welcome_messages[random_index]);
+        }
+        else {
+            msg_content = std::format("Welcome to Hildacord, {} {}!\n\nHildacord is a great place for everyone from all around the world to come around a show that they all love: Hilda!", event.updated.get_user()->get_mention(), welcome_messages[random_index]);
+        }
 
         const dpp::message welcome_message = dpp::message(msg_content)
             .add_embed(embed)
