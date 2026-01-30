@@ -380,7 +380,7 @@ void UserEntry::increment_xp(const int amount) {
 }
 
 bool UserEntry::has_submitted_today() {
-    int midnight_today = util::midnight_today_seconds();
+    int64_t midnight_today = util::midnight_today_seconds();
     auto doc = get_user_document();
 
     if (doc["latest_submission_id"].type() == bsoncxx::type::k_null) {
