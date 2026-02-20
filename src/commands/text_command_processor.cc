@@ -15,6 +15,7 @@
 
 #include "commands/staff/initialize_user.h"
 
+#include "commands/admin/get_version.h"
 #include "commands/admin/set_activity.h"
 #include "commands/admin/run_birthday.h"
 
@@ -30,7 +31,8 @@ static std::unordered_map<std::string, command_function> command_map = {
     {"levelalert", commands::levelalert::execute},
     {"streakwarning", commands::streakwarning::execute},
     {"leaderboard", commands::leaderboard::execute},
-    {"runbirthday", commands::run_birthday::execute}
+    {"runbirthday", commands::run_birthday::execute},
+    {"version", commands::get_version::execute}
 };
 
 namespace commands {
