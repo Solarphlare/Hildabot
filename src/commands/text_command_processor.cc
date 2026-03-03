@@ -5,19 +5,7 @@
 #include <unordered_map>
 #include "config.h"
 
-#include "commands/stats.h"
-#include "commands/levelcheck.h"
-#include "commands/submit.h"
-#include "commands/birthday.h"
-#include "commands/levelalert.h"
-#include "commands/streakwarning.h"
-#include "commands/leaderboard.h"
-
-#include "commands/staff/initialize_user.h"
-
-#include "commands/admin/get_version.h"
-#include "commands/admin/set_activity.h"
-#include "commands/admin/run_birthday.h"
+#include "commands/text_commands.h"
 
 typedef std::function<dpp::task<void>(const dpp::message_create_t&, const std::vector<std::string>&)> command_function;
 

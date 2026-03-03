@@ -3,12 +3,8 @@
 #include <functional>
 #include <unordered_map>
 #include <string>
-#include "slashcommands/birthday/birthday.h"
-#include "slashcommands/stats.h"
-#include "slashcommands/store.h"
-#include "slashcommands/leaderboard.h"
-#include "slashcommands/inventory.h"
-#include "slashcommands/staff/set_streak.h"
+
+#include "slashcommands/slash_commands.h"
 
 typedef std::function<dpp::task<void>(const dpp::slashcommand_t&)> slash_command_function;
 
