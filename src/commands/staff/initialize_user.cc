@@ -4,10 +4,10 @@
 #include <algorithm>
 #include <format>
 #include <iterator>
+#include <bsoncxx/builder/basic/document.hpp>
 #include "util/command_permissions.h"
 #include "db/user_entry.h"
 #include "constants.h"
-#include <bsoncxx/builder/basic/document.hpp>
 #include "xp/xp_system_calculator.h"
 #include "db/mongo_database.h"
 #include "rank/rank_util.h"
