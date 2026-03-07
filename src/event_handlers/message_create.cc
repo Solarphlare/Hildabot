@@ -5,6 +5,7 @@
 #include "xp/xp_system.h"
 #include "commands/text_command_processor.h"
 #include "util/heartbeat.h"
+#include "misc/w5.h"
 
 bool test_message_validity(const dpp::message& message) {
     if (message.author.is_bot()) return false;
@@ -29,6 +30,8 @@ namespace events {
         if (!test_message_validity(event.msg)) co_return;
 
         else if (!event.msg.content.starts_with(PREFIX) && !event.msg.guild_id.empty() && event.msg.guild_id == BASE_GUILD_ID) {
+            co_await misc::w5::run(event);
+
             // Standard XP-eligible message
             co_await xp::give_xp_for_message(event);
         }

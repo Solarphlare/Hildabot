@@ -1,7 +1,7 @@
 #pragma once
 
-#define VERSION_NUMBER "3.2.1"
-#define BUILD_NUMBER "12B017"
+#define VERSION_NUMBER "3.2.2"
+#define BUILD_NUMBER "12B018"
 
 #ifdef __aarch64__
 #define VERSION VERSION_NUMBER "-arm64"
