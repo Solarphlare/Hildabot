@@ -4,7 +4,7 @@ CXXFLAGS := -std=c++20 -Wall -Werror -Wpedantic \
              -I/usr/local/include/mongocxx/v_noabi \
 			 -I/usr/local/include/bsoncxx/v_noabi \
              -Iinclude
-LDFLAGS := -ldpp -lmongocxx -lbsoncxx -lssl -lcrypto -lcurl -lz -pthread
+LDFLAGS := -ldpp -lmongocxx1 -lbsoncxx1 -lssl -lcrypto -lcurl -lz -pthread
 MAKEFLAGS += -j$(shell echo $(shell nproc) / 2 | bc)
 
 # ——— Project Layout ———

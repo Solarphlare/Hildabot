@@ -26,14 +26,14 @@ jobs:
         id: cache-dpp
         with:
           path: dpp_build_output
-          key: dpp-v10.1.3 # Change this to invalidate cache when updating DPP
+          key: dpp-v10.1.5
 
       - name: Build DPP
         if: steps.cache-dpp.outputs.cache-hit != 'true'
         run: |
           git clone https://github.com/brainboxdotcc/DPP
           cd DPP
-          git switch --detach v10.1.3
+          git switch --detach v10.1.5
           cmake -B ./build -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/dpp_build_output
           cmake --build ./build -j$(nproc)
           cd build
@@ -44,14 +44,14 @@ jobs:
         id: cache-mongocxx
         with:
           path: mongo_build_output
-          key: mongocxx-r4.1.4 # Change this to invalidate cache when updating mongocxx
+          key: mongocxx-r4.4.0
 
       - name: Build mongocxx
         if: steps.cache-mongocxx.outputs.cache-hit != 'true'
         run: |
-          curl -sOLf https://github.com/mongodb/mongo-cxx-driver/releases/download/r4.1.4/mongo-cxx-driver-r4.1.4.tar.gz
-          tar -xzf mongo-cxx-driver-r4.1.4.tar.gz
-          cd mongo-cxx-driver-r4.1.4/build
+          curl -sOLf https://github.com/mongodb/mongo-cxx-driver/releases/download/r4.4.0/mongo-cxx-driver-r4.4.0.tar.gz
+          tar -xzf mongo-cxx-driver-r4.4.0.tar.gz
+          cd mongo-cxx-driver-r4.4.0/build
           cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=20 -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/mongo_build_output
           cmake --build . -j$(nproc)
           sudo cmake --build . --target install
